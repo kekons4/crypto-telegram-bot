@@ -1,0 +1,24 @@
+{
+  "name": "cryptoliticsbot",
+  "version": "0.0.1",
+  "description": "A Telegram bot designed to pull advanced analytics on Solana based meme coins.",
+  "main": "cryptolitics-bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node cryptolitics-bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kekons4/CryptoliticsBot.git"
+  },
+  "keywords": ["telegram", "bot", "crypto"],
+  "author": "Keon Pourboghrat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kekons4/CryptoliticsBot/issues"
+  },
+  "homepage": "https://github.com/kekons4/CryptoliticsBot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
