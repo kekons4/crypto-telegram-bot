@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/kekons4/CryptoliticsBot.git"
   },
-  "keywords": ["telegram", "bot", "crypto"],
+  "keywords": [
+    "telegram",
+    "bot",
+    "crypto"
+  ],
   "author": "Keon Pourboghrat",
   "license": "ISC",
   "bugs": {
@@ -19,6 +23,7 @@
   },
   "homepage": "https://github.com/kekons4/CryptoliticsBot#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "node-telegram-bot-api": "^0.66.0"
   }
 }
