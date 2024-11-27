@@ -24,6 +24,7 @@
   "homepage": "https://github.com/kekons4/CryptoliticsBot#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "node-telegram-bot-api": "^0.66.0"
+    "node-telegram-bot-api": "^0.66.0",
+    "ws": "^8.18.0"
   }
 }
