@@ -71,7 +71,19 @@ const commandCheck = (msg, chatId) => {
             bot.sendMessage(chatId, env.CA);
             break;
         case "/learn":
-            bot.sendMessage(chatId, env.LEARN);
+            const formattedMessage = `
+<b>Introducing Big Pharmai</b>: a community-led effort to flip Big Pharma.
+We’re a group of biohackers led by @anthonyfauccai on a mission to unfuck drug discovery.
+
+<b>2/</b> We've been biohacking since we were teenagers, running n=1 experiments from our bedrooms while Big Pharma was busy filing patents. They banned our favorite compounds, built their walls, and milked every last dollar in the process.
+
+<b>3/</b> The system is broken. The drugs barely work and have tons of side effects. The whole industry is reactive. Big Pharma isn’t even trying to extend our healthspan, let alone lifespan. Promising compounds sit on shelves. Breakthrough research gathers dust. None of this has changed in decades.
+
+<b>But it’s about to.</b>
+
+We’re about to back the most impactful projects in <b>DeSci</b> and support them in every conceivable way. SITG: at <b>Big Pharmai</b>, we don't just buy and sell drugs, we try them ourselves.
+            `;
+            bot.sendMessage(chatId, formattedMessage, { parse_mode: 'HTML' });
             break;
         case "/menu":
             const options = {
@@ -112,11 +124,11 @@ const adminCommands = (msg, chatId) => {
             fs.writeFileSync(path.join(process.cwd(), "env.json"), JSON.stringify(env));
             bot.sendMessage(chatId, `CA has been set to: ${message}`);
             break;
-        case "/setlearn":
-            env.LEARN = message;
-            fs.writeFileSync(path.join(process.cwd(), "env.json"), JSON.stringify(env));
-            bot.sendMessage(chatId, `CA has been set to: ${message}`);
-            break;
+        // case "/setlearn":
+        //     env.LEARN = message;
+        //     fs.writeFileSync(path.join(process.cwd(), "env.json"), JSON.stringify(env));
+        //     bot.sendMessage(chatId, `CA has been set to: ${message}`);
+        //     break;
         case "/btn":
             // Define inline keyboard buttons
             const options = {
@@ -150,7 +162,19 @@ bot.on('callback_query', (callbackQuery) => {
     if (data === 'ca') {
         bot.sendMessage(message.chat.id, env.CA);
     } else if (data === 'learn') {
-        bot.sendMessage(message.chat.id, env.LEARN);
+        const formattedMessage = `
+<b>Introducing Big Pharmai</b>: a community-led effort to flip Big Pharma.
+We’re a group of biohackers led by @anthonyfauccai on a mission to unfuck drug discovery.
+
+<b>2/</b> We've been biohacking since we were teenagers, running n=1 experiments from our bedrooms while Big Pharma was busy filing patents. They banned our favorite compounds, built their walls, and milked every last dollar in the process.
+
+<b>3/</b> The system is broken. The drugs barely work and have tons of side effects. The whole industry is reactive. Big Pharma isn’t even trying to extend our healthspan, let alone lifespan. Promising compounds sit on shelves. Breakthrough research gathers dust. None of this has changed in decades.
+
+<b>But it’s about to.</b>
+
+We’re about to back the most impactful projects in <b>DeSci</b> and support them in every conceivable way. SITG: at <b>Big Pharmai</b>, we don't just buy and sell drugs, we try them ourselves.
+            `;
+        bot.sendMessage(message.chat.id, formattedMessage, { parse_mode: 'HTML' });
     } else if (data === 'closeMenu') {
          // Delete the previous message
          bot.deleteMessage(message.chat.id, message.message_id)
