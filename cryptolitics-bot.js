@@ -16,35 +16,6 @@ const bot = new TelegramBot(token, { polling: true });
 
 console.log("CryptoliticsBot Online");
 
-// const ws = new WebSocket('wss://pumpportal.fun/api/data');
-
-// ws.on('open', function open() {
-
-//     // Subscribing to token creation events
-//     let payload = {
-//         method: "subscribeNewToken", 
-//       }
-//     ws.send(JSON.stringify(payload));
-  
-//     // // Subscribing to trades made by accounts
-//     payload = {
-//         method: "subscribeAccountTrade",
-//         keys: ["AArPXm8JatJiuyEffuC1un2Sc835SULa4uQqDcaGpAjV", "HUrbfZsYMKsZhSSNZsSwWJwFz1WKNU8yfB7PcbgKrsAx", "Gjs1n3tCSqyia4PbH3hyzb8XnkiqaqTtVEo9cnropvn"] // array of accounts to watch
-//       }
-//     ws.send(JSON.stringify(payload));
-  
-//     // Subscribing to trades on tokens
-//     payload = {
-//         method: "subscribeTokenTrade",
-//         keys: ["Bwc4EBE65qXVzZ9ZiieBraj9GZL4Y2d7NN7B9pXENWR2"] // array of token CAs to watch
-//     }
-//     ws.send(JSON.stringify(payload));
-//   });
-  
-//   ws.on('message', function message(data) {
-//     console.log(JSON.parse(data));
-//   });
-
 // // Function to perform the task
 const periodicTask = async () => {
     const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/Bp7ryX5QQFJZrXPoaj5mhP3BjzpTxJUiBMjXaLJBLoga', {
