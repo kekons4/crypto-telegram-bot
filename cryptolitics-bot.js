@@ -1,10 +1,11 @@
 const TelegramBot = require('node-telegram-bot-api');
-const WebSocket = require('ws');
 const fs = require("fs");
 const path = require("path");
 
-// User Defined modules and files
-const env = require("./env.json");
+// User Defined modules and configs
+const {adminCommands} = require('./src/utils/adminCommands');
+const {memberCommands} = require('./src/utils/memberCommands');
+const env = require("./src/assets/env.json");
 
 // Add you botfather api token into .env
 const token = env.BOTFATHERAPITOKEN;
@@ -16,115 +17,6 @@ const bot = new TelegramBot(token, { polling: true });
 
 console.log("CryptoliticsBot Online");
 
-// // Function to perform the task
-const periodicTask = async () => {
-    const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/Bp7ryX5QQFJZrXPoaj5mhP3BjzpTxJUiBMjXaLJBLoga', {
-        method: 'GET',
-        headers: {},
-    });
-    const data = await response.json();
-    const message = `${JSON.stringify(data)} | ${new Date().toLocaleTimeString()}`;
-    console.log(message);
-    // bot.sendMessage(targetChatId, message).catch((error) => {
-    //     console.error('Error sending scheduled message:', error);
-    // });
-};
-
-const commandCheck = (msg, chatId) => {
-    switch(msg.text) {
-        case "/kreios":
-            bot.sendMessage(chatId, `This is a secret command... do not share`);
-            break;
-        case "/welcome":
-            bot.sendMessage(chatId, `Welcome to the Big Pharmai ${msg.from.first_name}! Try /menu to start!`);
-            break;
-        case "/ca":
-            bot.sendMessage(chatId, env.CA);
-            break;
-        case "/learn":
-            const formattedMessage = `
-<b>Introducing Big Pharmai</b>: a community-led effort to flip Big Pharma.
-We’re a group of biohackers led by @anthonyfauccai on a mission to unfuck drug discovery.
-
-<b>2/</b> We've been biohacking since we were teenagers, running n=1 experiments from our bedrooms while Big Pharma was busy filing patents. They banned our favorite compounds, built their walls, and milked every last dollar in the process.
-
-<b>3/</b> The system is broken. The drugs barely work and have tons of side effects. The whole industry is reactive. Big Pharma isn’t even trying to extend our healthspan, let alone lifespan. Promising compounds sit on shelves. Breakthrough research gathers dust. None of this has changed in decades.
-
-<b>But it’s about to.</b>
-
-We’re about to back the most impactful projects in <b>DeSci</b> and support them in every conceivable way. SITG: at <b>Big Pharmai</b>, we don't just buy and sell drugs, we try them ourselves.
-            `;
-            bot.sendMessage(chatId, formattedMessage, { parse_mode: 'HTML' });
-            break;
-        case "/menu":
-            const options = {
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: 'Available Commands', callback_data: 'nothing' }
-                        ],
-                        [
-                            { text: '👥Twitter/X', url: env.XPROFILE },
-                            { text: '📜CA', callback_data: 'ca' },
-                            { text: '📚Learn', callback_data: 'learn' }
-                        ],
-                        [
-                            { text: '🕸Website', callback_data: 'website' },
-                            { text: '📈Dexscreener', callback_data: "dexscreener" }
-                        ],
-                        [
-                            { text: '❌Close', callback_data: 'closeMenu' }
-                        ]
-                    ]
-                }
-            };
-
-            bot.sendMessage(chatId, "Menu", options);
-            break;
-    }
-}
-
-const adminCommands = (msg, chatId) => {
-    const cmd = msg.text === undefined ? "ERROR" : msg.text.split(" ")[0];
-    const message = msg.text === undefined ? "ERROR" : msg.text.split(" ")[1];
-
-
-    switch(cmd) {
-        case "/setca":
-            env.CA = message;
-            fs.writeFileSync(path.join(process.cwd(), "env.json"), JSON.stringify(env));
-            bot.sendMessage(chatId, `CA has been set to: ${message}`);
-            break;
-        // case "/setlearn":
-        //     env.LEARN = message;
-        //     fs.writeFileSync(path.join(process.cwd(), "env.json"), JSON.stringify(env));
-        //     bot.sendMessage(chatId, `CA has been set to: ${message}`);
-        //     break;
-        case "/btn":
-            // Define inline keyboard buttons
-            const options = {
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: '👥Twitter/X', url: env.XPROFILE },
-                            { text: '📜CA', callback_data: 'ca' },
-                            { text: '📚Learn', callback_data: 'learn' }
-                        ],
-                        [
-                            { text: '❌Close', callback_data: 'closeMenu' }
-                        ]
-                    ]
-                }
-            };
-
-            bot.sendMessage(chatId, 'Available Commands', options);
-            break;
-        case "ERROR":
-            console.log("Non-standard message was sent");
-            break;
-    }
-}
-
 // Handle callback queries
 bot.on('callback_query', (callbackQuery) => {
     const message = callbackQuery.message;
@@ -133,19 +25,8 @@ bot.on('callback_query', (callbackQuery) => {
     if (data === 'ca') {
         bot.sendMessage(message.chat.id, env.CA);
     } else if (data === 'learn') {
-        const formattedMessage = `
-<b>Introducing Big Pharmai</b>: a community-led effort to flip Big Pharma.
-We’re a group of biohackers led by @anthonyfauccai on a mission to unfuck drug discovery.
-
-<b>2/</b> We've been biohacking since we were teenagers, running n=1 experiments from our bedrooms while Big Pharma was busy filing patents. They banned our favorite compounds, built their walls, and milked every last dollar in the process.
-
-<b>3/</b> The system is broken. The drugs barely work and have tons of side effects. The whole industry is reactive. Big Pharma isn’t even trying to extend our healthspan, let alone lifespan. Promising compounds sit on shelves. Breakthrough research gathers dust. None of this has changed in decades.
-
-<b>But it’s about to.</b>
-
-We’re about to back the most impactful projects in <b>DeSci</b> and support them in every conceivable way. SITG: at <b>Big Pharmai</b>, we don't just buy and sell drugs, we try them ourselves.
-            `;
-        bot.sendMessage(message.chat.id, formattedMessage, { parse_mode: 'HTML' });
+        const msg = {text: "/learn"};
+        memberCommands(msg, message.chat.id, bot);
     } else if (data === 'closeMenu') {
          // Delete the previous message
          bot.deleteMessage(message.chat.id, message.message_id)
@@ -175,20 +56,20 @@ bot.on('message', async (msg) => {
 
             if (userRole === 'creator' || userRole === 'administrator' || userRole === 'Sythographer') {
                 // bot.sendMessage(chatId, `Hello Admin, ${msg.from.first_name}!`);
-                commandCheck(msg, chatId);
-                adminCommands(msg, chatId);
+                memberCommands(msg, chatId, bot);
+                adminCommands(msg, chatId, bot);
             } else if (userRole === 'Bot'){
-                commandCheck(msg, chatId);
+                memberCommands(msg, chatId, bot);
             } else if (userRole === 'member') {
                 // bot.sendMessage(chatId, `Hi ${msg.from.first_name}, you’re a member of this group.`);
-                commandCheck(msg, chatId);
+                memberCommands(msg, chatId, bot);
             } else {
                 // bot.sendMessage(chatId, `Sorry ${msg.from.first_name}, you don’t have permission to use this command.`);
-                commandCheck(msg, chatId);
+                memberCommands(msg, chatId, bot);
             }
         } catch (error) {
             console.error('Error fetching chat member info:', error);
-            bot.sendMessage(chatId, 'Unable to determine your permissions.');
+            bot.sendMessage(chatId, 'You do not have Sufficient Permissions to run this Command');
         }
     }
 });
@@ -212,5 +93,5 @@ bot.on('new_chat_members', (msg) => {
     });
 });
 
-// // Schedule the task to run every 10 seconds (60,000 milliseconds)
-// setInterval(periodicTask, 10 * 1000);
+// Schedule the task to run every X amount of seconds if FETCHDEX is true
+// if(env.FETCHDEX === true) intervalId = setInterval(periodicTask, env.periodicInterval * 1000);
