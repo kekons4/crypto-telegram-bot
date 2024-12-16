@@ -86,7 +86,7 @@ bot.on('new_chat_members', (msg) => {
         const lastName = newMember.last_name || '';
 
         // Customize your welcome message
-        const welcomeMessage = `Welcome ${firstName} ${lastName} to Big Pharmai! 🎉 Try /menu to start!`;
+        const welcomeMessage = `Welcome ${firstName} ${lastName} to Big Pharmai! 🎉`;
 
         // Send the welcome message
         bot.sendMessage(chatId, welcomeMessage);

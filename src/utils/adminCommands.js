@@ -7,14 +7,15 @@ let botty = null;
 
 // Function to perform the task
 const periodicTask = async () => {
-    const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/Bp7ryX5QQFJZrXPoaj5mhP3BjzpTxJUiBMjXaLJBLoga', {
+    const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/7FxfCMQBX9NmLEzppE3sSFYJJFSrtAdBjMYqQFwx7wNh', {
         method: 'GET',
         headers: {},
     });
     const data = await response.json();
-    const { priceUsd, priceNative } = data.pair;
+    const { priceUsd, priceNative, marketCap } = data.pair;
     const message = `
-<b>THIS IS A TEST</b>
+<b>Big Pharmai💊</b>
+<b>Market Cap: </b> ${marketCap}
 <b>Price USD: </b>${priceUsd}
 <b>Price Native: </b>${priceNative}
     `;
@@ -53,9 +54,10 @@ function adminCommands(msg, chatId, bot) {
                 if(intervalId !== null) {
                     clearInterval(intervalId);
                     intervalId = setInterval(periodicTask, env.periodicInterval * 1000);
+                    bot.sendMessage(chatId, `Restarting Periodic Dexscreener fetch to: ${env.periodicInterval} seconds`);
+                } else {
+                    bot.sendMessage(chatId, `Periodic Dexscreener fetch interval set: ${env.periodicInterval}`);
                 }
-
-                bot.sendMessage(chatId, `Periodic Dexscreener fetch interval set: ${env.periodicInterval}`);
             } else if(message === "start") {
                 if(intervalId === null) {
                     intervalId = setInterval(periodicTask, env.periodicInterval * 1000);

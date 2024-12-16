@@ -10,8 +10,11 @@ async function memberCommands(msg, chatId, bot) {
         case "/kreios":
             bot.sendMessage(chatId, `You found Easter Egg #1 🐇`);
             break;
+        case "/website":
+            bot.sendMessage(chatId, `Website: ${env.WEBSITE}`);
+            break;
         case "/welcome":
-            bot.sendMessage(chatId, `Welcome to the Big Pharmai ${msg.from.first_name}! Try /menu to start!`);
+            bot.sendMessage(chatId, `Welcome to the Big Pharmai ${msg.from.first_name}!`);
             break;
         case "/ca":
             bot.sendMessage(chatId, env.CA);
@@ -44,7 +47,7 @@ We’re about to back the most impactful projects in <b>DeSci</b> and support th
                             { text: '📚Learn', callback_data: 'learn' }
                         ],
                         [
-                            { text: '🕸Website', callback_data: 'website' },
+                            { text: '🕸Website', url: env.WEBSITE },
                             { text: '📈Dexscreener', callback_data: "dexscreener" }
                         ],
                         [
