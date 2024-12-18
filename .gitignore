@@ -4,3 +4,4 @@ node_modules/
 env.json
 apikey.txt
 src/assets/big-pharma-vip-wallets.txt
+escrow-wallet-info.txt
