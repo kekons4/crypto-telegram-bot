@@ -2,22 +2,36 @@ const fs = require('fs');
 const path = require('path');
 let env = require("../assets/env.json");
 
-async function memberCommands(msg, chatId, bot) {
+// This is a check for if the message being sent by user is on a Topic channel
+// message_thread_id is the Topic channel id
+// const sendMessage = async (msg, chatId, response, bot) => {
+//     if(!msg.message_thread_id) {
+//         console.log("topic");
+//         bot.sendMessage(chatId, response, {message_thread_id: msg.message_thread_id});
+//     } else {
+//         console.log("not topic");
+//         bot.sendMessage(chatId, response, {message_thread_id: msg.message_thread_id});
+//     }
+// }
+
+async function memberCommands(msg, groupProfile, bot) {
+    const chatId = groupProfile.chatId;
     // resync the env config
     // env = fs.readFileSync(path.join(process.cwd(), "src/assets/env.json"));
 
     switch(msg.text) {
         case "/kreios":
-            bot.sendMessage(chatId, `You found Easter Egg #1 🐇`);
+            // isTopic(msg, chatId, `You found Easter Egg #1 🐇`, bot);
+            bot.sendMessage(chatId, `You found Easter Egg #1 🐇`, {message_thread_id: msg.message_thread_id});
             break;
         case "/website":
-            bot.sendMessage(chatId, `Website: ${env.WEBSITE}`);
+            bot.sendMessage(chatId, `Website: ${groupProfile.WEBSITE}`, {message_thread_id: msg.message_thread_id});
             break;
         case "/welcome":
-            bot.sendMessage(chatId, `Welcome to the Big Pharmai ${msg.from.first_name}!`);
+            bot.sendMessage(chatId, `Welcome to the Big Pharmai ${msg.from.first_name}!`, {message_thread_id: msg.message_thread_id});
             break;
         case "/ca":
-            bot.sendMessage(chatId, env.CA);
+            bot.sendMessage(chatId, groupProfile.CA, {message_thread_id: msg.message_thread_id});
             break;
         case "/learn":
             const formattedMessage = `
@@ -32,7 +46,7 @@ We’re a group of biohackers led by @anthonyfauccai on a mission to unfuck drug
 
 We’re about to back the most impactful projects in <b>DeSci</b> and support them in every conceivable way. SITG: at <b>Big Pharmai</b>, we don't just buy and sell drugs, we try them ourselves.
             `;
-            bot.sendMessage(chatId, formattedMessage, { parse_mode: 'HTML' });
+            bot.sendMessage(chatId, formattedMessage, { parse_mode: 'HTML', message_thread_id: msg.message_thread_id });
             break;
         case "/menu":
             const options = {
@@ -42,19 +56,20 @@ We’re about to back the most impactful projects in <b>DeSci</b> and support th
                             { text: 'Available Commands', callback_data: 'nothing' }
                         ],
                         [
-                            { text: '👥Twitter/X', url: env.XPROFILE },
+                            { text: '👥Twitter/X', url: groupProfile.XPROFILE },
                             { text: '📜CA', callback_data: 'ca' },
                             { text: '📚Learn', callback_data: 'learn' }
                         ],
                         [
-                            { text: '🕸Website', url: env.WEBSITE },
+                            { text: '🕸Website', url: groupProfile.WEBSITE },
                             { text: '📈Dexscreener', callback_data: "dexscreener" }
                         ],
                         [
                             { text: '❌Close', callback_data: 'closeMenu' }
                         ]
                     ]
-                }
+                },
+                message_thread_id: msg.message_thread_id
             };
 
             bot.sendMessage(chatId, "Menu", options);
