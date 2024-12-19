@@ -35,7 +35,7 @@ async function memberCommands(msg, groupProfile, bot) {
             break;
         case "/learn":
             const formattedMessage = `
-<b>Introducing Big Pharmai</b>: a community-led effort to flip Big Pharma.
+<b>Introducing ${groupProfile.groupName}</b>: a community-led effort to flip Big Pharma.
 We’re a group of biohackers led by @anthonyfauccai on a mission to unfuck drug discovery.
 
 <b>2/</b> We've been biohacking since we were teenagers, running n=1 experiments from our bedrooms while Big Pharma was busy filing patents. They banned our favorite compounds, built their walls, and milked every last dollar in the process.
