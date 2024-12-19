@@ -2,18 +2,6 @@ const fs = require('fs');
 const path = require('path');
 let env = require("../assets/env.json");
 
-// This is a check for if the message being sent by user is on a Topic channel
-// message_thread_id is the Topic channel id
-// const sendMessage = async (msg, chatId, response, bot) => {
-//     if(!msg.message_thread_id) {
-//         console.log("topic");
-//         bot.sendMessage(chatId, response, {message_thread_id: msg.message_thread_id});
-//     } else {
-//         console.log("not topic");
-//         bot.sendMessage(chatId, response, {message_thread_id: msg.message_thread_id});
-//     }
-// }
-
 async function memberCommands(msg, groupProfile, bot) {
     const chatId = groupProfile.chatId;
     // resync the env config

@@ -25,15 +25,16 @@ const periodicTask = async () => {
     });
 };
 
-function adminCommands(msg, chatId, bot) {
+function adminCommands(msg, groupProfile, bot) {
+    const chatId = groupProfile.chatId;
     botty = bot;
     const cmd = msg.text === undefined ? "ERROR" : msg.text.split(" ")[0];
     const message = msg.text === undefined ? "ERROR" : msg.text.split(" ")[1];
 
     switch(cmd) {
         case "/setca":
-            env.CA = message;
-            fs.writeFileSync(path.join(process.cwd(), "src/assets/env.json"), JSON.stringify(env));
+            groupProfile.CA = message;
+            fs.writeFileSync(path.join(process.cwd(), `src/database/${groupProfile.chatId}.json`), JSON.stringify(groupProfile));
             bot.sendMessage(chatId, `CA has been set to: ${message}`);
             break;
         case "/interval":
@@ -47,27 +48,27 @@ function adminCommands(msg, chatId, bot) {
                 }
             } else if(message === "set") {
                 const seconds = msg.text.split(" ")[2] === undefined ? 300 : Number(msg.text.split(" ")[2]);
-                env.periodicInterval = seconds;
-                fs.writeFileSync(path.join(process.cwd(), "src/assets/env.json"), JSON.stringify(env));
+                groupProfile.periodicInterval = seconds;
+                fs.writeFileSync(path.join(process.cwd(), `src/database/${groupProfile.chatId}.json`), JSON.stringify(groupProfile));
 
                 // clear current interval and restart with new interval and time
                 if(intervalId !== null) {
                     clearInterval(intervalId);
-                    intervalId = setInterval(periodicTask, env.periodicInterval * 1000);
-                    bot.sendMessage(chatId, `Restarting Periodic Dexscreener fetch to: ${env.periodicInterval} seconds`);
+                    intervalId = setInterval(periodicTask, groupProfile.periodicInterval * 1000);
+                    bot.sendMessage(chatId, `Restarting Periodic Dexscreener fetch to: ${groupProfile.periodicInterval} seconds`);
                 } else {
-                    bot.sendMessage(chatId, `Periodic Dexscreener fetch interval set: ${env.periodicInterval}`);
+                    bot.sendMessage(chatId, `Periodic Dexscreener fetch interval set: ${groupProfile.periodicInterval}`);
                 }
             } else if(message === "start") {
                 if(intervalId === null) {
-                    intervalId = setInterval(periodicTask, env.periodicInterval * 1000);
-                    bot.sendMessage(chatId, `Dexscreener will fetch data every ${env.periodicInterval} seconds now`);
+                    intervalId = setInterval(periodicTask, groupProfile.periodicInterval * 1000);
+                    bot.sendMessage(chatId, `Dexscreener will fetch data every ${groupProfile.periodicInterval} seconds now`);
                 } else {
                     bot.sendMessage(chatId, "Dexscreener fetch is already running!");
                 }
             } else if(message === "status") {
                 if(intervalId === null) bot.sendMessage(chatId, "Dexscreener fetch is OFFLINE");
-                else bot.sendMessage(chatId, `Dexscreener fetching every ${env.periodicInterval} seconds`);
+                else bot.sendMessage(chatId, `Dexscreener fetching every ${groupProfile.periodicInterval} seconds`);
             } else {
                 bot.sendMessage(chatId, `The /interval ${message} command does not exist...`);
             }
