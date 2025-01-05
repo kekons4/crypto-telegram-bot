@@ -37,6 +37,11 @@ function adminCommands(msg, groupProfile, bot) {
             fs.writeFileSync(path.join(process.cwd(), `src/database/${groupProfile.chatId}.json`), JSON.stringify(groupProfile));
             bot.sendMessage(chatId, `CA has been set to: ${message}`);
             break;
+        case "/setwebsite":
+            groupProfile.WEBSITE = message;
+            fs.writeFileSync(path.join(process.cwd(), `src/database/${groupProfile.chatId}.json`), JSON.stringify(groupProfile));
+            bot.sendMessage(chatId, `Website has been updated to ${groupProfile.WEBSITE}`);
+            break;
         case "/interval":
             if(message === "stop") {
                 if(intervalId !== null) {
