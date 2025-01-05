@@ -1,6 +1,6 @@
 {
   "name": "cryptoliticsbot",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "A Telegram bot designed to pull advanced analytics on Solana based meme coins.",
   "main": "cryptolitics-bot.js",
   "scripts": {
